@@ -33,6 +33,7 @@ def predict_if_bankrupt(transaction_id):
     display_summary(transaction)
     return prediction
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
 def display_summary(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
     shap_values = explainer.shap_values(transaction, check_additivity=False)
