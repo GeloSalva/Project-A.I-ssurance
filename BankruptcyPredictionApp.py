@@ -29,14 +29,21 @@ def st_shap(plot, height=None):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, height=height)
 
+# ...
 def predict_if_bankrupt(transaction_id):
     transaction = X_holdout.loc[transaction_id].values.reshape(1, -1)
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
+    if prediction == 'Bankrupt':
+        st.error('This Company may BANKRUPT', icon="🚨")
+    elif prediction == 'Not Bankrupt':
+        st.success('This Company is NOT at risk of bankruptcy!', icon="✅")
     display_forceplot(transaction)
     display_summary(transaction)
     return prediction
+# ...
+
     
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
