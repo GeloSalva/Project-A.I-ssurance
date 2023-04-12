@@ -50,8 +50,8 @@ def display_summary(shap_values):
     st.pyplot(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar'),bbox_inches='tight',dpi=300,pad_inches=0)
     
 def display_forceplot(shap_values, explainer, transaction):
-    st_shap(shap.force_plot(explainer.expected_value, 
-                shap_values, X_holdout.columns))
+    st.pyplot(shap.force_plot(explainer.expected_value, 
+                shap_values[0], X_holdout.columns))
     
     
     
