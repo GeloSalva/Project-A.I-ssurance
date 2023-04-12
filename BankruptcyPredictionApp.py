@@ -2,6 +2,8 @@
 import pickle
 import pandas as pd
 import shap
+import streamlit.components.v1 as components
+
 
 # Model deployment
 from flask import Flask
