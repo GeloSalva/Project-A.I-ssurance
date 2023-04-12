@@ -49,7 +49,7 @@ def display_summary(shap_values):
     
 def display_forceplot(shap_values, explainer, transaction):
     st_shap(shap.force_plot(explainer.expected_value, 
-                shap_values,shap_values, X_holdout.columns, matplotlib = True))
+                shap_values, X_holdout.columns))
     
     
     
