@@ -30,7 +30,7 @@ def predict_if_bankrupt(transaction_id):
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
-    return display_summary(transaction)
+    display_summary(transaction)
     return prediction
 
 def display_summary(transaction):
