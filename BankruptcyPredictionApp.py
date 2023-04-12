@@ -60,7 +60,7 @@ def display_forceplot(transaction):
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
 
-    if output == 'Bankrupt':
-        st.error('This Company may BANKRUPT', icon="🚨")
-    elif output == 'Not Bankrupt':
+    if output == 'Not Bankrupt':
         st.success('This Company is NOT at risk of bankruptcy!', icon="✅")
+    elif output == 'Bankrupt':
+        st.error('This Company may BANKRUPT', icon="🚨")
