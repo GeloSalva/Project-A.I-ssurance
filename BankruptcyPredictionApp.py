@@ -34,12 +34,21 @@ def predict_if_bankrupt(transaction_id):
     return prediction
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
-def display_summary(transaction):
+
+def display(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
     shap_values = explainer.shap_values(transaction, check_additivity=False)
+    display_summary(shap_values)
+    display_forceplot(shap_values, explainer)
+    
+def display_summary(shap_values):
     st.pyplot(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar'),bbox_inches='tight',dpi=300,pad_inches=0)
     
-
+def display_forceplot(shap_values, explainer):
+    st.pyplot(shap.force_plot(explainer.expected_value, 
+                shap_values, X_holdout.columns),bbox_inches='tight',dpi=300,pad_inches=0)
+    
+    
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
     
