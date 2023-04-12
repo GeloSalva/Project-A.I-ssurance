@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 import shap
 import streamlit.components.v1 as components
-
+import matplotlib.pyplot as plt
 
 # Model deployment
 from flask import Flask
@@ -50,10 +50,9 @@ def display_summary(shap_values):
     st.pyplot(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar'),bbox_inches='tight',dpi=300,pad_inches=0)
     
 def display_forceplot(shap_values, explainer, transaction):
-    st.pyplot(shap.force_plot(explainer.expected_value, 
-                shap_values[0], X_holdout.columns))
-    
-    
+    shap.initjs()
+    force_plot = shap.force_plot(explainer.expected_value, shap_values[0], X_holdout.columns)
+    st_shap(force_plot)
     
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
