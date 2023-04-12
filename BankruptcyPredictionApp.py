@@ -7,8 +7,8 @@ from flask import Flask
 import streamlit as st
 
 model = pickle.load(open('gb_tk.pkl', 'rb'))
-PSE = pd.read_csv('PSE.csv', index_col=0)
-PSE_transactions = PSE.index.to_list()
+X_holdout = pd.read_csv('PSE.csv', index_col=0)
+holdout_transactions = X_holdout.index.to_list()
 
 st.title("Company Bankruptcy Prediction")
 html_temp = """
@@ -21,11 +21,11 @@ st.markdown(html_temp, unsafe_allow_html = True)
 #adding a selectbox
 choice = st.selectbox(
     "Select Transaction Number:",
-    options = PSE_transactions)
+    options = holdout_transactions)
 
 
-def predict_if_bankrupt(company):    
-    transaction = PSE.loc[company].values.reshape(1, -1)
+def predict_if_bankrupt(transaction_id):    
+    transaction = PSE.loc[transaction_id].values.reshape(1, -1)
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
@@ -37,4 +37,4 @@ if st.button("Predict"):
     if output == 'Bankrupt':
         st.error('This Company may BANKRUPT', icon="🚨")
     elif output == 'Not Bankrupt':
-        st.success('This Company is not at risk of bankruptcy!', icon="✅")
+        st.success('This Company is NOT at risk of bankruptcy!', icon="✅")
