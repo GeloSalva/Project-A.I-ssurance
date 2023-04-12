@@ -41,7 +41,7 @@ def predict_if_bankrupt(transaction_id):
         st.success('This Company is NOT at risk of bankruptcy!', icon="✅")
     display_forceplot(transaction)
     display_summary(transaction)
-    return prediction
+    
 # ...
 
     
