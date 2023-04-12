@@ -36,8 +36,8 @@ def predict_if_bankrupt(transaction_id):
 def display_summary(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
     shap_values = explainer.shap_values(transaction, check_additivity=False)
-    st.write(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar'), unsafe_allow_html = True)
-    st.write('Test')
+    st.pyplot(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar', matplotlib = True),bbox_inches=‘tight’,dpi=300,pad_inches=0))
+    
 
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
