@@ -25,7 +25,7 @@ choice = st.selectbox(
 
 
 def predict_if_bankrupt(transaction_id):    
-    transaction = PSE.loc[transaction_id].values.reshape(1, -1)
+    transaction = X_holdout.loc[transaction_id].values.reshape(1, -1)
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
