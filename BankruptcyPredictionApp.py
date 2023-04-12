@@ -1,6 +1,7 @@
 # General Libraries
 import pickle
 import pandas as pd
+import shap
 
 # Model deployment
 from flask import Flask
@@ -29,7 +30,13 @@ def predict_if_bankrupt(transaction_id):
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
+    display_summary(transaction)
     return prediction
+
+def display_summary(transaction):
+    explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
+    shap_values = explainer.shap_values(transaction, check_additivity=False)
+    shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar')
 
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
