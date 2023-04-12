@@ -34,15 +34,33 @@ def predict_if_bankrupt(transaction_id):
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
-    if prediction == 'Bankrupt':
-        st.error('This Company may BANKRUPT', icon="🚨")
-    else:
-        st.success('This Company is NOT at risk of bankruptcy!', icon="✅")
     display_summary(transaction)
     display_forceplot(transaction)
     return prediction
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
+def display_summary(transaction):
+    explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
+    shap_values = explainer.shap_values(transaction, check_additivity=False)
+    plt.tight_layout()
+    shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar')
+    st.pyplot(bbox_inches='tight', dpi=300, pad_inches=0)
+
+def display_forceplot(transaction):
+    explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
+    shap_values = explainer.shap_values(transaction, check_additivity=False)
+    # Create a matplotlib.pyplot figure object
+    force_plot_fig = shap.force_plot(explainer.expected_value,
+                                     shap_values[0], X_holdout.columns,
+                                     matplotlib=True)
+    # Render the figure in Streamlit
+    st.pyplot(force_plot_fig, bbox_inches='tight', dpi=300, pad_inches=0)
+
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
+
+    if output == 'Bankrupt':
+        st.error('This Company may BANKRUPT', icon="🚨")
+    elif output == 'Not Bankrupt':
+        st.success('This Company is NOT at risk of bankruptcy!', icon="✅")
