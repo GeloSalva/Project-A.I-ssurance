@@ -6,7 +6,6 @@ import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 
 # Model deployment
-from flask import Flask
 import streamlit as st
 
 model = pickle.load(open('gb_tk.pkl', 'rb'))
@@ -21,42 +20,44 @@ html_temp = """
 """
 st.markdown(html_temp, unsafe_allow_html = True)
 
-#adding a selectbox
+# adding a selectbox
 choice = st.selectbox(
     "Select Transaction Number:",
-    options = holdout_transactions)
+    options=holdout_transactions)
 
 def st_shap(plot, height=None):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, height=height)
-    
-def predict_if_bankrupt(transaction_id):    
+
+def predict_if_bankrupt(transaction_id):
     transaction = X_holdout.loc[transaction_id].values.reshape(1, -1)
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
     display_summary(transaction)
+    display_forceplot(transaction)
     return prediction
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-def display(transaction):
+def display_summary(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
     shap_values = explainer.shap_values(transaction, check_additivity=False)
-    display_summary(shap_values)
-    display_forceplot(shap_values, explainer, transaction)
-    
-def display_summary(shap_values):
-    st.pyplot(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar'),bbox_inches='tight',dpi=300,pad_inches=0)
-    
-def display_forceplot(shap_values, explainer, transaction):
-    shap.initjs()
-    force_plot = shap.force_plot(explainer.expected_value, shap_values[0], X_holdout.columns)
-    st_shap(force_plot)
-    
+    plt.tight_layout()
+    shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar')
+    st.pyplot(bbox_inches='tight', dpi=300, pad_inches=0)
+
+def display_forceplot(transaction):
+    explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
+    shap_values = explainer.shap_values(transaction, check_additivity=False)
+    shap.force_plot(explainer.expected_value,
+                    shap_values[0], X_holdout.columns)
+    st.pyplot(bbox_inches='tight', dpi=300, pad_inches=0)
+
+
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
-    
+
     if output == 'Bankrupt':
         st.error('This Company may BANKRUPT', icon="🚨")
     elif output == 'Not Bankrupt':
