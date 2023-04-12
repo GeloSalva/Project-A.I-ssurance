@@ -24,7 +24,10 @@ choice = st.selectbox(
     "Select Transaction Number:",
     options = holdout_transactions)
 
-
+def st_shap(plot, height=None):
+    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
+    components.html(shap_html, height=height)
+    
 def predict_if_bankrupt(transaction_id):    
     transaction = X_holdout.loc[transaction_id].values.reshape(1, -1)
     prediction_num = model.predict(transaction)[0]
@@ -45,9 +48,8 @@ def display_summary(shap_values):
     st.pyplot(shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar'),bbox_inches='tight',dpi=300,pad_inches=0)
     
 def display_forceplot(shap_values, explainer, transaction):
-    st.pyplot(shap.force_plot(explainer.expected_value, 
+    st_shap(shap.force_plot(explainer.expected_value, 
                 shap_values,shap_values, X_holdout.columns, matplotlib = True))
-    
     
     
     
