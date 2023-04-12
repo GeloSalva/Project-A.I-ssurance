@@ -18,7 +18,7 @@ html_temp = """
 <h2 style="color:white;text-align:center;"> Company Bankruptcy Detection ML App </h2>
 </div>
 """
-st.markdown(html_temp, unsafe_allow_html = True)
+st.markdown(html_temp, unsafe_allow_html=True)
 
 # adding a selectbox
 choice = st.selectbox(
@@ -50,10 +50,12 @@ def display_summary(transaction):
 def display_forceplot(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
     shap_values = explainer.shap_values(transaction, check_additivity=False)
-    shap.force_plot(explainer.expected_value,
-                    shap_values[0], X_holdout.columns)
-    st.pyplot(bbox_inches='tight', dpi=300, pad_inches=0)
-
+    # Create a matplotlib.pyplot figure object
+    force_plot_fig = shap.force_plot(explainer.expected_value,
+                                     shap_values[0], X_holdout.columns,
+                                     matplotlib=True)
+    # Render the figure in Streamlit
+    st.pyplot(force_plot_fig, bbox_inches='tight', dpi=300, pad_inches=0)
 
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
