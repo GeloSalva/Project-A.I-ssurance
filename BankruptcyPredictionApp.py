@@ -46,7 +46,7 @@ def display_summary(shap_values):
     
 def display_forceplot(shap_values, explainer):
     st.pyplot(shap.force_plot(explainer.expected_value, 
-                shap_values, X_holdout.columns),bbox_inches='tight',dpi=300,pad_inches=0)
+                shap_values, X_holdout.columns, matplotlib = True),bbox_inches='tight',dpi=300,pad_inches=0)
     
     
 if st.button("Predict"):
