@@ -22,7 +22,7 @@ st.markdown(html_temp, unsafe_allow_html=True)
 
 # adding a selectbox
 choice = st.selectbox(
-    "Select Transaction Number:",
+    "Select Company:",
     options=holdout_transactions)
 
 def st_shap(plot, height=None):
@@ -34,9 +34,9 @@ def predict_if_bankrupt(transaction_id):
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
-    print(prediction)
-    display_summary(transaction)
     display_forceplot(transaction)
+    display_summary(transaction)
+    return prediction
     
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
