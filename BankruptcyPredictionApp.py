@@ -34,9 +34,10 @@ def predict_if_bankrupt(transaction_id):
     prediction_num = model.predict(transaction)[0]
     pred_map = {1: 'Bankrupt', 0: 'Not Bankrupt'}
     prediction = pred_map[prediction_num]
+    return prediction
     display_summary(transaction)
     display_forceplot(transaction)
-    return prediction
+    
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
