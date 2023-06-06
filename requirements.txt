@@ -1,5 +1,4 @@
-pickle==3.0.1
-pandas==1.1.5 
-shap==0.38.1
-streamlit==1.5.0
-matplotlib==3.4.2
+shap==0.41.0
+pandas==2.0.1
+streamlit==1.12.2
+matplotlib==3.7.1
