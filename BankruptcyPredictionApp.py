@@ -57,7 +57,8 @@ def display_summary(transaction):
 
 def display_forceplot(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
-    shap_values = explainer.shap_values(transaction, check_additivity=False)
+    X_np = np.array(transaction, dtype=bool)
+    shap_values = explainer.shap_values(X_np, check_additivity=False)
     # Create a matplotlib.pyplot figure object
     force_plot_fig = shap.force_plot(explainer.expected_value[0],
                                      shap_values[0][0], X_holdout.columns)
