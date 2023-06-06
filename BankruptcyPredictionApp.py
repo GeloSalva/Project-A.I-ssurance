@@ -51,14 +51,14 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def display_summary(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
-    shap_values = explainer.shap_values(transaction, check_additivity=bool)
+    shap_values = explainer.shap_values(transaction)
     plt.tight_layout()
     shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar')
     st.pyplot(bbox_inches='tight', dpi=300, pad_inches=0)
 
 def display_forceplot(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
-    shap_values = explainer.shap_values(transaction, check_additivity=bool)
+    shap_values = explainer.shap_values(transaction)
     # Create a matplotlib.pyplot figure object
     force_plot_fig = shap.force_plot(explainer.expected_value,
                                      shap_values[0], X_holdout.columns,
