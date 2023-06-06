@@ -4,7 +4,6 @@ import pandas as pd
 import shap
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
-import numpy as np 
 
 # Model deployment
 import streamlit as st
@@ -51,21 +50,20 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def display_summary(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
-    shap_values = explainer.shap_values(transaction, check_additivity=False)
+    shap_values = explainer.shap_values(transaction, check_additivity=bool)
     plt.tight_layout()
     shap.summary_plot(shap_values, X_holdout.columns, plot_type='bar')
     st.pyplot(bbox_inches='tight', dpi=300, pad_inches=0)
 
 def display_forceplot(transaction):
     explainer = shap.TreeExplainer(model, feature_names=X_holdout.columns)
-    shap_values = explainer.shap_values(transaction, check_additivity=False)  # Pass boolean value directly
+    shap_values = explainer.shap_values(transaction, check_additivity=bool)
     # Create a matplotlib.pyplot figure object
     force_plot_fig = shap.force_plot(explainer.expected_value,
                                      shap_values[0], X_holdout.columns,
                                      matplotlib=True)
     # Render the figure in Streamlit
     st.pyplot(force_plot_fig, bbox_inches='tight', dpi=300, pad_inches=0)
-
 
 if st.button("Predict"):
     output = predict_if_bankrupt(choice)
