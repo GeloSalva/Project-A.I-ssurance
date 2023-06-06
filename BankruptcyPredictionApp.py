@@ -4,6 +4,7 @@ import pandas as pd
 import shap
 import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
+import numpy as np 
 
 # Model deployment
 import streamlit as st
