@@ -6,6 +6,8 @@ import streamlit.components.v1 as components
 import matplotlib.pyplot as plt
 import numpy as np 
 
+np.__version__ = '1.19.5'
+
 # Model deployment
 import streamlit as st
 
