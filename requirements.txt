@@ -1,12 +1,4 @@
-jupyterlab==3.2.6
-kmodes==0.12.1
 matplotlib==3.7.1
-numba==0.57.0
-numpy==1.23.1
-openpyxl==3.1.2
 pandas==2.0.1
-plotly==5.14.1
-scikit-learn==1.2.2
-scipy==1.9.1
-shap==0.39.0
+shap==0.41.0
 streamlit==1.12.2
